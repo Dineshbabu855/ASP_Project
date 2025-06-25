@@ -1,0 +1,45 @@
+using Microsoft.AspNetCore.Mvc;
+
+namespace SimpleApiApp.Controllers
+{
+    // Define the route for the controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductsController : ControllerBase
+    {
+        // Sample data: list of products
+        private static readonly List<Product> Products = new List<Product>
+        {
+            new Product { Id = 1, Name = "Laptop", Price = 999.99 },
+            new Product { Id = 2, Name = "Smartphone", Price = 699.99 },
+            new Product { Id = 3, Name = "Headphones", Price = 149.99 }
+        };
+
+        // GET api/products
+        [HttpGet]
+        public ActionResult<IEnumerable<Product>> GetProducts()
+        {
+            return Ok(Products);
+        }
+
+        // GET api/products/{id}
+        [HttpGet("{id}")]
+        public ActionResult<Product> GetProduct(int id)
+        {
+            var product = Products.FirstOrDefault(p => p.Id == id);
+
+            if (product == null)
+                return NotFound();
+
+            return Ok(product);
+        }
+    }
+
+    // Model for Product
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
+    }
+}
